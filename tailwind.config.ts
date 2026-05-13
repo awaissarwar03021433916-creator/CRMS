@@ -8,6 +8,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        twilight: "#03045e",
+        tealBlue: "#0077b6",
+        turquoise: "#00b4d8",
+        frosted: "#90e0ef",
+        cyanLight: "#caf0f8",
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
