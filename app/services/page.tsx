@@ -29,7 +29,7 @@ const services = [
     icon: "🔐",
     title: "Secure Authentication",
     description:
-      "Credentials are hashed with bcrypt and sessions managed via JWT. Inactive accounts are blocked from uploads.",
+      "Credentials are hashed with bcryptjs and sessions managed via JWT. Inactive accounts are blocked from uploads.",
   },
   {
     icon: "📊",

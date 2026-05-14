@@ -7,7 +7,7 @@ const stack = [
   "Prisma + PostgreSQL",
   "NextAuth (JWT)",
   "TailwindCSS",
-  "bcrypt",
+  "bcryptjs",
   "Zod",
   "Framer Motion",
 ];

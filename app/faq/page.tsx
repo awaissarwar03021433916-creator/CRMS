@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     q: "Is my data secure?",
-    a: "Passwords are hashed with bcrypt, sessions use JWT, and all sensitive routes require authentication and role checks.",
+    a: "Passwords are hashed with bcryptjs, sessions use JWT, and all sensitive routes require authentication and role checks.",
   },
 ];
 

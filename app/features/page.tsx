@@ -21,7 +21,7 @@ const featureGroups = [
         icon: "🔐",
         title: "Secure Authentication",
         description:
-          "Passwords are hashed with bcrypt. Sessions use JWT via NextAuth. Inactive employees are blocked automatically.",
+          "Passwords are hashed with bcryptjs. Sessions use JWT via NextAuth. Inactive employees are blocked automatically.",
       },
     ],
   },
