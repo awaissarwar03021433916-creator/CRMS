@@ -172,7 +172,7 @@ export default function DocumentList({ role }: Props) {
                   <td className="px-4 py-2 text-gray-900">{d.employee?.email ?? "-"}</td>
                   <td className="px-4 py-2 text-gray-900">
                     <a
-                      href={`/${d.filePath}`}
+                      href={/^https?:\/\//.test(d.filePath) ? d.filePath : `/${d.filePath}`}
                       target="_blank"
                       rel="noreferrer"
                       className="text-indigo-600 hover:text-indigo-700 underline"

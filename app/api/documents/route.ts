@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import { authOptions } from "../../../lib/auth";
 import { prisma } from "../../../lib/prisma";
 import {
   documentUploadSchema,
   documentStatusUpdateSchema,
 } from "../../../lib/validation/document";
+
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -62,21 +63,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(uploadsDir, { recursive: true });
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      { error: "Blob storage is not configured" },
+      { status: 500 }
+    );
+  }
 
   const cleanedName = file.name.replace(/\s+/g, "-").replace(/[^a-zA-Z0-9._-]/g, "");
-  const filename = `${Date.now()}-${cleanedName || "document"}`;
-  const absoluteFilePath = path.join(uploadsDir, filename);
-  const relativeFilePath = `uploads/${filename}`;
-  const fileBuffer = Buffer.from(await file.arrayBuffer());
+  const blobPath = `documents/${employee.id}/${Date.now()}-${cleanedName || "document.pdf"}`;
 
-  await writeFile(absoluteFilePath, fileBuffer);
+  let blobUrl: string;
+  try {
+    const blob = await put(blobPath, file, {
+      access: "public",
+      contentType: "application/pdf",
+      addRandomSuffix: true,
+    });
+    blobUrl = blob.url;
+  } catch (err) {
+    console.error("Vercel Blob upload failed", err);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+  }
 
   const doc = await prisma.document.create({
     data: {
       employeeId: employee.id,
-      filePath: relativeFilePath,
+      filePath: blobUrl,
       status: "PENDING",
       uploadedBy: session.user.email,
     },
